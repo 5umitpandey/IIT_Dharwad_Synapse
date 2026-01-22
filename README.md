@@ -1,4 +1,5 @@
 # Synapse Challenge: High-Precision sEMG Gesture Recognition
+![694640b1e0efc_synapse-the-neurotech-challenge](https://github.com/user-attachments/assets/5ebe4056-caa3-4aaa-bea7-f0d5ff9d3184)
 
 ## 1. Project Overview
 This project implements a robust deep learning pipeline for classifying 8-channel surface Electromyography (sEMG) signals into 5 distinct hand gestures. The solution achieves a top-1 accuracy of 78.48% on the hidden test set (Subjects 21-25) by utilizing a specialized ensemble architecture and Test Time Augmentation (TTA).
@@ -118,3 +119,4 @@ python src/inference.py --data /path/to/your/dataset.pt --checkpoints /path/to/w
 * Gesture 4: 97% F1-Score (High Robustness)
 * Gesture 0: 77% F1-Score (Significantly improved via Ensemble)
 * Gesture 2/3 Confusion: Successfully resolved via MixUp training.
+
