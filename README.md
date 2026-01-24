@@ -1,10 +1,15 @@
 # Synapse Challenge: High-Precision sEMG Gesture Recognition
 ![694640b1e0efc_synapse-the-neurotech-challenge](https://github.com/user-attachments/assets/5ebe4056-caa3-4aaa-bea7-f0d5ff9d3184)
 
+# Synapse Challenge: High-Precision sEMG Gesture Recognition
+
 ## 1. Project Overview
 This project implements a robust deep learning pipeline for classifying 8-channel surface Electromyography (sEMG) signals into 5 distinct hand gestures. The solution achieves a top-1 accuracy of 78.48% on the hidden test set (Subjects 21-25) by utilizing a specialized ensemble architecture and Test Time Augmentation (TTA).
 
 The core challenge addressed in this solution is the "Inter-Subject Variability" problem, where muscle signals differ significantly between users. Our approach mitigates this using a dual-stream training strategy that balances signal precision with generalization.
+
+![Inter-Subject Variability Analysis](images/06_subject_rms_analysis.png)
+*Figure 1: RMS Analysis illustrating high variance in signal amplitude across different subjects, necessitating robust normalization strategies.*
 
 ## 2. Methodology & Approach
 
@@ -13,6 +18,9 @@ Instead of relying on a single model, we trained two distinct "specialist" varia
 
 1.  **The Precision Model (Standard):** Trained on raw, clean signal data. This model specializes in distinct, high-amplitude gestures (Gesture 0 and Gesture 4).
 2.  **The Generalization Model (MixUp):** Trained using MixUp regularization (alpha=0.4). This model specializes in disambiguating confused classes (specifically Gesture 2 vs. Gesture 3) by learning linear interpolations of the feature space.
+
+![Training Dynamics](images/01_training_comparison.png)
+*Figure 2: Training dynamics comparison. The MixUp model (Orange) maintains higher loss due to difficult blended labels but achieves superior generalization on unseen validation data compared to the Standard model (Blue).*
 
 During inference, predictions are generated via a weighted soft-voting mechanism:
 * Weight Standard: 0.45
@@ -25,6 +33,9 @@ To further stabilize predictions against sensor noise and shift artifacts, we im
 3.  Shift Right (10 time steps)
 4.  Gaussian Noise Injection (scale=0.02)
 5.  Amplitude Scaling (1.05x)
+
+![Augmentation Visualization](images/07_augmentation_check.png)
+*Figure 3: Visualization of TTA augmentations. The top row shows original signals; the bottom row shows the effect of noise and shifting, forcing the model to focus on the signal envelope rather than exact timing.*
 
 The final probability is the mean of these 5 predictions, significantly reducing variance and "borderline" errors.
 
@@ -63,6 +74,7 @@ Synapse_Challenge/
 │
 ├── requirements.txt           # Python dependencies
 └── README.md                  # Project documentation
+
 ```
 
 ## 5. Installation & Setup
@@ -79,6 +91,7 @@ Synapse_Challenge/
 
 ```bash
 pip install -r requirements.txt
+
 ```
 
 ## 6. How to Run Inference
@@ -91,6 +104,7 @@ Run with default paths (assumes folder structure matches Section 4):
 
 ```bash
 python src/inference.py
+
 ```
 
 ### Custom Usage
@@ -99,6 +113,7 @@ You can specify custom paths for the data, model checkpoints, and output locatio
 
 ```bash
 python src/inference.py --data /path/to/your/dataset.pt --checkpoints /path/to/weights --output /path/to/save/results
+
 ```
 
 **Arguments:**
@@ -114,9 +129,14 @@ python src/inference.py --data /path/to/your/dataset.pt --checkpoints /path/to/w
 * **Accuracy:** 78.48%
 * **Strategy:** Global Weighted Ensemble + TTA
 
+![Final Confusion Matrix](images/02_confusion_matrix_final.png)
+*Figure 4: Final Confusion Matrix. The diagonal dominance indicates high accuracy. The ensemble successfully minimizes the confusion between Gesture 2 and Gesture 3.*
+
 **Class-wise Performance Highlights:**
 
 * Gesture 4: 97% F1-Score (High Robustness)
 * Gesture 0: 77% F1-Score (Significantly improved via Ensemble)
 * Gesture 2/3 Confusion: Successfully resolved via MixUp training.
 
+![Class-wise F1 Scores](images/03_f1_scores_final.png)
+*Figure 5: Class-wise F1 Scores. The bar chart highlights the model's consistent performance across most classes, with Gesture 1 remaining the most challenging.*
