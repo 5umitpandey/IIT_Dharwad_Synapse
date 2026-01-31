@@ -140,3 +140,25 @@ python src/inference.py --data /path/to/your/dataset.pt --checkpoints /path/to/w
 
 ![Class-wise F1 Scores](images/03_f1_scores_final.png)
 *Figure 5: Class-wise F1 Scores. The bar chart highlights the model's consistent performance across most classes, with Gesture 1 remaining the most challenging.*
+
+
+<div align="center">
+
+## 👥 Team ASHSUM
+
+**Team Members**:
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/ashir1s.png" width="150px;" alt="Ashirwad Sinha"/><br/>
+      <a href="https://github.com/ashir1s">Ashiwad Sinha</a>
+    </td>
+    <td align="center">
+      <img src="https://github.com/5umitpandey.png" width="150px;" alt="Sumit Pandey"/><br/>
+      <a href="https://github.com/5umitpandey">Sumit Pandey</a>
+    </td>
+  </tr>
+</table>
+
+</div>
