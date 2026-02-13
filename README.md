@@ -162,3 +162,4 @@ python src/inference.py --data /path/to/your/dataset.pt --checkpoints /path/to/w
 </table>
 
 </div>
+
